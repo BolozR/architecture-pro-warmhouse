@@ -1,0 +1,19 @@
+@startuml
+title FitLife Context Diagram
+
+top to bottom direction
+
+!include templates/C4_Context.puml
+
+Person(user, "User", "Can remotely turn on/off the heating. \nView the current temperature via the web interface.")
+Person(specialist, "Specialist", "Specialist in the connection of the heating system")
+System(WarmHouse, "Warm House", "System managing heating, get and show temperature")
+
+System_Ext(heatingControl, "Third-Party heating control system", "External device for turning on/off the heating")
+System_Ext(bank, "Third-Party temperature sensor", "External device for temperature monitoring")
+
+Rel(user, WarmHouse, "Set heating and get current temperature")
+Rel(specialist,WarmHouse,"Setup the system")
+Rel(WarmHouse,heatingControl,"Control heating")
+Rel(WarmHouse,bank,"Fetches temperature data")
+@enduml
