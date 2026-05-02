@@ -13,7 +13,7 @@ Container_Boundary(WarmHouse, "WarmHouse System") {
   Container(ApiGateway, "Api Gateway", "Java, Spring", "Collect data for user request, route requests")
   Container(HeatingWorker, "Heating Worker", "Java, Spring", "Control heating")
   Container(SensorFetcher, "Sensor Fetcher", "Java, Spring", "Fetch current temperature")
-  Container(Database, "Database", "PostgreSQL", "Stores user data (sensors/toggles lists) and schedules")
+  Container(Database, "Database", "PostgreSQL", "Stores user data (sensors/toggles lists)")
 }
 
 System_Ext(sensors, "Temperature Sensor", "External API for getting current temperature")
