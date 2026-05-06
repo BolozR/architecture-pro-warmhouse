@@ -1,3 +1,9 @@
+-- Create the database if it doesn't exist
+CREATE DATABASE smarthome;
+
+-- Connect to the database
+\c smarthome;
+
 -- Create the sensors table
 CREATE TABLE IF NOT EXISTS sensors (
     id SERIAL PRIMARY KEY,
