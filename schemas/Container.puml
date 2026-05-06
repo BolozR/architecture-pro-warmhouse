@@ -1,0 +1,33 @@
+@startuml
+title WarmHouse Container Diagram
+
+top to bottom direction
+
+!include templates/C4_Component.puml
+
+Person(user, "User", "Can use system.")
+System(WarmHouse, "WarmHouse System", "System managing heating, collect data, and payments")
+
+Container_Boundary(WarmHouse, "WarmHouse System") {
+  Container(App, "Web/Mobile Application", "JavaScript/[Kotlin, Swift]", "Handles user interactions")
+  Container(ApiGateway, "Api Gateway", "Java, Spring", "Collect data for user request, route requests")
+  Container(HeatingWorker, "Heating Worker", "Java, Spring", "Control heating")
+  Container(SensorFetcher, "Sensor Fetcher", "Java, Spring", "Fetch current temperature")
+  Container(Database, "Database", "PostgreSQL", "Stores user data (sensors/toggles lists)")
+}
+
+System_Ext(sensors, "Temperature Sensor", "External API for getting current temperature")
+System_Ext(heatingToggle, "Heating Toggle", "External API for turning on/off the heating")
+
+Rel(user, App, "Remotely turn on/off the heating")
+Rel(user, App, "View the current temperature via the web interface")
+Rel(user, App, "Connect new device")
+
+Rel(App, ApiGateway, "Send request")
+Rel(ApiGateway, HeatingWorker, "Send request")
+Rel(ApiGateway, SensorFetcher, "Send request")
+
+Rel(HeatingWorker,heatingToggle,"Change heating")
+Rel(ApiGateway,Database,"Reads/Writes user data")
+Rel(SensorFetcher,sensors,"Fetches temperature data")
+@enduml

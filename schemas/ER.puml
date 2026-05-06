@@ -1,0 +1,45 @@
+@startuml
+title WarmHouse ER Diagram
+
+hide circle
+
+entity "User" as user {
+  *id : int
+  name : string
+}
+
+entity "House" as house {
+  *id : int
+  address : string
+}
+
+entity "DeviceType" as device_type {
+  *id : int
+  name : string
+}
+
+entity "Device" as device {
+  *id : int
+  serial_number : string
+  status : string
+}
+
+entity "Module" as module {
+  *id : int
+  name : string
+}
+
+entity "TelemetryData" as telemetry {
+  *id : int
+  value : float
+  recorded_at : datetime
+}
+
+user ||--o{ house
+house ||--o{ device
+device_type ||--o{ device
+device ||--o{ module
+device ||--o{ telemetry
+module ||--o{ telemetry
+
+@enduml

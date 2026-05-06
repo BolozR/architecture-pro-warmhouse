@@ -1,0 +1,38 @@
+@startuml
+title WarmHouse Api Gateway Component Diagram
+
+top to bottom direction
+
+!include templates/C4_Component.puml
+
+Person(user, "User", "Can use system.")
+Container(App, "Web/Mobile Application", "JavaScript/[Kotlin, Swift]", "Handles user interactions")
+Container(heatingWorker, "Heating Worker", "Java, Spring", "Controls heating")
+Container(sensorFetcher, "Sensor Fetcher", "Java, Spring", "Fetches current temperature")
+ContainerDb(database, "Database", "PostgreSQL", "Stores user data (sensors/toggles lists")
+
+Container_Boundary(apiGateway, "Api Gateway") {
+  Component(heatingController, "Heating Controller", "Java, Spring MVC", "Control heating")
+  Component(sensorController, "Sensor Controller", "Java, Spring MVC", "Fetches current temperature from sensors")
+  Component(deviceController, "Device Controller", "Java, Spring MVC", "Manage requests for connecting and managing devices")
+  Component(orchestrationService, "Routing / Orchestration Service", "Java, Spring Service", "Coordinates business flows and routes requests to internal workers")
+  Component(repositoryLayer, "Repository Layer", "Spring Data / JDBC", "Reads and writes system data in PostgreSQL")
+}
+
+Rel(user, App, "Remotely turn on/off the heating")
+Rel(user, App, "View the current temperature via the web interface")
+Rel(user, App, "Connect new device")
+
+Rel(App, sensorController, "Requests temperature and sensor data")
+Rel(App, deviceController, "Connects and manages devices")
+
+Rel(heatingController, orchestrationService, "Calls business logic")
+Rel(sensorController, orchestrationService, "Calls business logic")
+Rel(deviceController, orchestrationService, "Calls business logic")
+
+Rel(orchestrationService, heatingWorker, "Sends heating commands")
+Rel(orchestrationService, sensorFetcher, "Requests current temperature")
+Rel(orchestrationService, repositoryLayer, "Reads and writes domain data")
+Rel(repositoryLayer, database, "Reads and writes user/device data")
+
+@enduml
